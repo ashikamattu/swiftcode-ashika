@@ -32,6 +32,6 @@ public class NewsAgentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return newsAgentResponse;
     }
 }
