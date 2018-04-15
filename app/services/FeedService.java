@@ -6,30 +6,28 @@ import org.w3c.dom.Node;
 import play.libs.ws.WS;
 import play.libs.ws.WSRequest;
 import play.libs.ws.WSResponse;
-import play.twirl.api.Xml;
 
-import java.util.*;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 public class FeedService {
-    public FeedResponse getFeedByQuery(String query){
-        FeedResponse feedResponse = new FeedResponse();
-        try{
-            WSRequest feedRequest = WS.url("https://news.google.com/news?q=Latest news about India&output=rss");
-            CompletionStage<WSResponse> responsePromise = feedRequest
-                    .setQueryParameter("q", query)
-                    .setQueryParameter("output", "rss")
-                    .get();
-            Document response = responsePromise.thenApply(WSResponse::asXml).toCompletableFuture().get();
-            Node item = response.getFirstChild().getFirstChild().getChildNodes().item(10);
-            feedResponse.title = item.getChildNodes().item(0).getFirstChild().getNodeValue();
-            feedResponse.pubDate = item.getChildNodes().item(3).getFirstChild().getNodeValue();
-            feedResponse.description = item.getChildNodes().item(4).getFirstChild().getNodeValue();
-        }catch(Exception e){
+    public FeedResponse getFeedByQuery(String query) {
+        FeedResponse feedResponseObject = new FeedResponse();
+        try {
+            WSRequest feedRequest = WS.url("https://news.google.com/news");
+            CompletionStage<WSResponse> responsePromise = feedRequest.setQueryParameter("output", "rss")
+                    .setQueryParameter("q", query).get();
+            Document feedResponse = responsePromise.thenApply(WSResponse::asXml).toCompletableFuture().get();
+
+            Node item = feedResponse.getFirstChild().getFirstChild().getChildNodes().item(10);
+            feedResponseObject.title = item.getChildNodes().item(0).getFirstChild().getNodeValue();
+            feedResponseObject.pubDate = item.getChildNodes().item(3).getFirstChild().getNodeValue();
+            feedResponseObject.description = item.getChildNodes().item(4).getFirstChild().getNodeValue();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return feedResponse;
-    }
+        return feedResponseObject;
 
+    }
 }
