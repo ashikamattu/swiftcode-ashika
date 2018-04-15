@@ -7,12 +7,18 @@ body {
 }
 
 #message-pane {
+
+    background-image: url("/assets/images/chess.jpg");
     background-color: #41f4e5;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #form-card {
     margin: : 0px;
 }
+
+
 
 .material-icons {
     font-size: 50px !important;

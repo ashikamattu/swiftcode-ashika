@@ -54,5 +54,6 @@ public class MessageActor extends UntypedActor {
             messageObject.sender = BOT;
             out.tell(mapper.writeValueAsString(messageObject), self());
         }
+
     }
 }
